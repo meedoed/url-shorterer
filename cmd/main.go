@@ -3,22 +3,28 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/meedoed/url-shorterer/internal/user"
-	"log"
+	"github.com/meedoed/url-shorterer/pkg/logging"
 )
 
 func main() {
+	logger := logging.GetLogger()
+
+	logger.Info("start app")
 	app := fiber.New()
 
-	handler := user.NewHandler()
+	handler := user.NewHandler(logger)
 	handler.Register(app)
 
 	start(app)
 }
 
 func start(app *fiber.App) {
+	logger := logging.GetLogger()
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello from fiber!")
 	})
 
-	log.Fatal(app.Listen(":8000"))
+	logger.Info("Server is listening...")
+	logger.Fatal(app.Listen(":8000"))
 }
