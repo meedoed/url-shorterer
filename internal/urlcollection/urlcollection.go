@@ -14,5 +14,5 @@ type URL struct {
 func (url *URL) GenURL() {
 	conf := config.GetConfig()
 	sha := sha256.Sum256([]byte(url.SourceURL))
-	url.ShortURL = fmt.Sprintf("%s:%s/%x", conf.Storage.Host, conf.Storage.Port, sha[:5])
+	url.ShortURL = fmt.Sprintf("%s:%s/%x", conf.Storage.Host, conf.Listen.Port, sha[:5])
 }

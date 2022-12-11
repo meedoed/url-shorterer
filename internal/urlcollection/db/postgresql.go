@@ -57,12 +57,10 @@ func NewRepository(client postgresql.Client, logger *logging.Logger) urlcollecti
 }
 
 func (r *repository) CheckURL(ctx context.Context, sourceURL string) (string, error) {
-	q := `
-			SELECT short_url 
-			FROM urlcollection 
-			WHERE source_url = $1`
+	q := `SELECT short_url FROM urlcollection WHERE source_url = $1`
 	var shortURL string
-	err := r.client.QueryRow(ctx, q, sourceURL).Scan(shortURL)
+	err := r.client.QueryRow(ctx, q, sourceURL).Scan(&shortURL)
+
 	if err != nil {
 		return "", err
 	}
